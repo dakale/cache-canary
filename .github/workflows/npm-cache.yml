@@ -9,7 +9,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         cache: [test, stable]
-    name: node-cache upload ${{ matrix.cache }} (${{ matrix.os }})
+    name: upload ${{ matrix.cache }} (${{ matrix.os }})
     steps:
     - uses: actions/checkout@v1
 
@@ -46,7 +46,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         cache: [test, stable]
-    name: node-cache restore ${{ matrix.cache }} (${{ matrix.os }})
+    name: restore ${{ matrix.cache }} (${{ matrix.os }})
     steps:
     - uses: actions/checkout@v1
 
