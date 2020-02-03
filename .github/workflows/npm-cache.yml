@@ -11,7 +11,7 @@ jobs:
         ports: ['3128:3128']
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         cache: [test, stable]
     name: upload ${{ matrix.cache }} (${{ matrix.os }})
     steps:
@@ -54,7 +54,7 @@ jobs:
         ports: ['3128:3128']
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         cache: [test, stable]
     name: restore ${{ matrix.cache }} (${{ matrix.os }})
     env:
