@@ -19,10 +19,10 @@ jobs:
     steps:
     - run: |
         curl -v httpbin.org/uuid
-        sudo iptables -I OUTPUT -d localhost -p tcp --dport 3128 -j ACCEPT
-        sudo iptables -P OUTPUT DROP
-        echo "The next curl should fail"
-        http_proxy='' curl -v httpbin.org/uuid
+        # sudo iptables -I OUTPUT -d localhost -p tcp --dport 3128 -j ACCEPT
+        # sudo iptables -P OUTPUT DROP
+        # echo "The next curl should fail"
+        # http_proxy='' curl -v httpbin.org/uuid
     - uses: actions/checkout@v1
     - name: Upload Stable Cache
       uses: actions/cache@v1
