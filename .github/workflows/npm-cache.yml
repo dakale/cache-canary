@@ -5,6 +5,10 @@ on: push
 jobs:
   upload:
     runs-on: ${{ matrix.os }}
+    services:
+      squid:
+        image: dakale/squid
+        ports: ['3128:3128']
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -24,6 +28,8 @@ jobs:
           ${{ runner.os }}-node++-${{ matrix.cache }}
 
     - name: Upload Test Cache
+      env:
+        http_proxy: localhost:3128
       uses: dakale/cache@release_http-client-port # Replace this version with version to test
       if: matrix.cache == 'test'
       with:
@@ -42,11 +48,17 @@ jobs:
   restore:
     needs: upload
     runs-on: ${{ matrix.os }}
+    services:
+      squid:
+        image: dakale/squid
+        ports: ['3128:3128']
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         cache: [test, stable]
     name: restore ${{ matrix.cache }} (${{ matrix.os }})
+    env:
+      http_proxy: localhost:3128
     steps:
     - uses: actions/checkout@v1
 
