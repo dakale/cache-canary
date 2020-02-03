@@ -49,7 +49,7 @@ jobs:
       working-directory: ./node
     - run: npm test
       working-directory: ./node
-    - run: docker logs squid
+    - run: docker logs ${{ job.services.squid.id }}
   restore:
     needs: upload
     runs-on: ${{ matrix.os }}
@@ -84,4 +84,4 @@ jobs:
       working-directory: ./node
     - run: npm test
       working-directory: ./node
-    - run: docker logs squid
+    - run: docker logs docker logs ${{ job.services.squid.id }}
