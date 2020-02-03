@@ -24,7 +24,7 @@ jobs:
           ${{ runner.os }}-node++-${{ matrix.cache }}
 
     - name: Upload Test Cache
-      uses: dakale/cache@release_http-client-port # Replace this version with version to test
+      uses: actions/cache@v1 # Replace this version with version to test
       if: matrix.cache == 'test'
       with:
         path: node/node_modules
