@@ -9,14 +9,16 @@ jobs:
       squid:
         image: dakale/squid
         ports: ['3128:3128']
+    env:
+      http_proxy: localhost:3128
     strategy:
       matrix:
         os: [ubuntu-latest]
         cache: [test, stable]
     name: upload ${{ matrix.cache }} (${{ matrix.os }})
     steps:
+    - run: curl -v httpbin.org/uuid
     - uses: actions/checkout@v1
-
     - name: Upload Stable Cache
       uses: actions/cache@v1
       if: matrix.cache == 'stable'
@@ -28,8 +30,6 @@ jobs:
           ${{ runner.os }}-node++-${{ matrix.cache }}
 
     - name: Upload Test Cache
-      env:
-        http_proxy: localhost:3128
       uses: dakale/cache@release_http-client-port # Replace this version with version to test
       if: matrix.cache == 'test'
       with:
@@ -52,16 +52,16 @@ jobs:
       squid:
         image: dakale/squid
         ports: ['3128:3128']
+    env:
+      http_proxy: localhost:3128
     strategy:
       matrix:
         os: [ubuntu-latest]
         cache: [test, stable]
     name: restore ${{ matrix.cache }} (${{ matrix.os }})
-    env:
-      http_proxy: localhost:3128
     steps:
+    - run: curl -v httpbin.org/uuid
     - uses: actions/checkout@v1
-
     - uses: dakale/cache@release_http-client-port # Always want to test restore with test version
       id: cache
       with:
