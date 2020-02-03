@@ -51,7 +51,7 @@ jobs:
       working-directory: ./node
     - run: | 
         docker logs ${{ job.services.squid.id }}
-        docker exec ${{ job.services.squid.id }} cat /var/log/squid/*.log
+        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log
 
   restore:
     needs: upload
@@ -89,4 +89,4 @@ jobs:
       working-directory: ./node
     - run: |
         docker logs ${{ job.services.squid.id }}
-        docker exec ${{ job.services.squid.id }} cat /var/log/squid/*.log
+        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log
