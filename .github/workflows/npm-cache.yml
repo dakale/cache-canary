@@ -90,3 +90,4 @@ jobs:
     - run: |
         docker logs ${{ job.services.squid.id }}
         docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log
+ 
