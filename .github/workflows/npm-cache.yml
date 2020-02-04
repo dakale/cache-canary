@@ -63,6 +63,7 @@ jobs:
         ports: ['3128:3128']
     env:
       http_proxy: localhost:3128
+      https_proxy: localhost:3128
     strategy:
       matrix:
         os: [ubuntu-latest]
