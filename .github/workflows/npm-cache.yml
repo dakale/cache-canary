@@ -26,6 +26,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Upload Stable Cache
       uses: actions/cache@v1
+      env:
+        http_proxy: localhost:3128
       if: matrix.cache == 'stable'
       with:
         path: node/node_modules
