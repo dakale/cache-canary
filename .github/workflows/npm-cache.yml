@@ -20,7 +20,8 @@ jobs:
     name: upload ${{ matrix.cache }} (${{ matrix.os }})
     steps:
     - run: |
-        curl -v httpbin.org/uuid
+        curl -v http://httpbin.org/uuid
+        curl -v https://httpbin.org/uuid
         # sudo iptables -I OUTPUT -d localhost -p tcp --dport 3128 -j ACCEPT
         # sudo iptables -P OUTPUT DROP
         # echo "The next curl should fail"
