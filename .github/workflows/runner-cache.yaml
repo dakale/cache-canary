@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: Block connections via hosts
       run: |
-        echo "127.0.0.0 github.com api.github.com artifactcache.actions.githubusercontent.com" >> /etc/hosts
+        echo "127.0.0.0 github.com api.github.com artifactcache.actions.githubusercontent.com" | sudo tee -a /etc/hosts
     - name: Create file to cache
       run: |
         mkdir test-cache
