@@ -12,7 +12,7 @@ jobs:
         options: '--health-cmd "sleep 5"'
     env:
       http_proxy: localhost:3128
-      https_proxy: localhost:3129
+      https_proxy: localhost:3128
     strategy:
       matrix:
         os: [ubuntu-latest]
