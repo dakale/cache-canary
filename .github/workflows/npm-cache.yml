@@ -56,7 +56,12 @@ jobs:
       working-directory: ./node
     - run: | 
         docker logs ${{ job.services.squid.id }}
-        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log
+        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log > access.log
+        # Ensure previous connections went through proxy
+        grep CONNECT github.com:443 access.log
+        grep CONNECT artifactcache.actions.githubusercontent.com:443 access.log
+        grep CONNECT *.blob.core.windows.net:443 access.log
+        grep CONNECT registry.npmjs.org:443 access.log
 
   restore:
     needs: upload
@@ -68,7 +73,7 @@ jobs:
         options: '--health-cmd "sleep 5"'
     env:
       http_proxy: http://localhost:3128
-      https_proxy: https://localhost:3128
+      https_proxy: http://localhost:3128
     strategy:
       matrix:
         os: [ubuntu-latest]
