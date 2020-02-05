@@ -10,15 +10,9 @@ jobs:
         image: dakale/squid
         ports: ['3128:3128']
         options: '--health-cmd "sleep 5"'
-      squidProxy:
-        image: huangtingluo/squid-proxy:latest
-        ports: ['3129:3129']
-        options: '--health-cmd "sleep 5"'
     env:
       http_proxy: http://localhost:3128
       https_proxy: http://localhost:3128
-      http_proxy_old: http://github:actions@localhost:3129
-      https_proxy_old: http://github:actions@localhost:3129
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -55,7 +49,6 @@ jobs:
     - run: npm test
       working-directory: ./node
     - run: | 
-        docker logs ${{ job.services.squid.id }}
         docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log > access.log
         # Ensure previous connections went through proxy
         grep "CONNECT github.com:443" access.log
@@ -100,6 +93,9 @@ jobs:
     - run: npm test
       working-directory: ./node
     - run: |
-        docker logs ${{ job.services.squid.id }}
-        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log
- 
+        docker exec ${{ job.services.squid.id }} cat /var/log/squid/access.log > access.log
+        # Ensure previous connections went through proxy
+        grep "CONNECT github.com:443" access.log
+        grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
+        grep "CONNECT .*.blob.core.windows.net:443" access.log
+        grep "CONNECT registry.npmjs.org:443" access.log
