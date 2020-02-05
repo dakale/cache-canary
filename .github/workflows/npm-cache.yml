@@ -7,12 +7,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       squid:
-        image: huangtingluo/squid-proxy:latest
-        ports: ['3128:3128']
+        image: dakale/squid
+        ports: ['3128:3128', '3129:3129']
         options: '--health-cmd "sleep 5"'
     env:
       http_proxy: localhost:3128
-      https_proxy: localhost:3128
+      https_proxy: localhost:3129
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -60,12 +60,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       squid:
-        image: huangtingluo/squid-proxy:latest
-        ports: ['3128:3128']
+        image: dakale/squid
+        ports: ['3128:3128', '3129:3129']
         options: '--health-cmd "sleep 5"'
     env:
       http_proxy: localhost:3128
-      https_proxy: localhost:3128
+      https_proxy: localhost:3129
     strategy:
       matrix:
         os: [ubuntu-latest]
