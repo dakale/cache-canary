@@ -10,7 +10,7 @@ jobs:
       squid:
         image: dakale/squid
         ports: ['3128:3128']
-        options: '--health-cmd "sleep 5"'
+        options: '--health-cmd "exit 0" --health-interval 5'
     env:
       http_proxy: http://localhost:3128
       https_proxy: http://localhost:3128
@@ -39,7 +39,7 @@ jobs:
       squid:
         image: dakale/squid
         ports: ['3128:3128']
-        options: '--health-cmd "sleep 5"'
+        options: '--health-cmd "exit 0" --health-interval 5'
     env:
       http_proxy: http://localhost:3128
       https_proxy: http://localhost:3128
