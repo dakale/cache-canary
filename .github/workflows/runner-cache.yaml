@@ -18,9 +18,6 @@ jobs:
       http_proxy: http://localhost:3128
       https_proxy: http://localhost:3128
     steps:
-    - name: Block connections via hosts
-      run: |
-        echo "127.0.0.0 github.com api.github.com artifactcache.actions.githubusercontent.com" | sudo tee -a /etc/hosts
     - name: Create file to cache
       run: |
         mkdir test-cache
@@ -32,7 +29,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-runner-
     - run: |
-        docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log .
+        docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log access.log
         cat access.log
         # Ensure previous connections went through proxy
         grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
@@ -68,7 +65,7 @@ jobs:
       shell: bash
       run: if [ $(cat test-cache/test.txt) == "foo" ]; then echo "Cache contents verified."; exit 0; else echo "Cache invalid"; exit 1; fi
     - run: |
-        docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log .
+        docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log access.log
         cat access.log
         # Ensure previous connections went through proxy
         grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
