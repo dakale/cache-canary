@@ -60,7 +60,7 @@ jobs:
         # Ensure previous connections went through proxy
         grep "CONNECT github.com:443" access.log
         grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
-        grep "CONNECT *.blob.core.windows.net:443" access.log
+        grep "CONNECT .*.blob.core.windows.net:443" access.log
         grep "CONNECT registry.npmjs.org:443" access.log
 
   restore:
