@@ -32,7 +32,6 @@ jobs:
         docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log .
         cat access.log
         # Ensure previous connections went through proxy
-        grep "CONNECT github.com:443" access.log
         grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
         grep "CONNECT .*.blob.core.windows.net:443" access.log
   restore:
@@ -65,3 +64,9 @@ jobs:
     - name: Check cache contents
       shell: bash
       run: if [ $(cat test-cache/test.txt) == "foo" ]; then echo "Cache contents verified."; exit 0; else echo "Cache invalid"; exit 1; fi
+    - run: |
+        docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log .
+        cat access.log
+        # Ensure previous connections went through proxy
+        grep "CONNECT artifactcache.actions.githubusercontent.com:443" access.log
+        grep "CONNECT .*.blob.core.windows.net:443" access.log
