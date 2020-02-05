@@ -22,9 +22,9 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: test-cache
-        key: ubuntu-latest-runner-${{ github.sha }}
+        key: ${{ runner.os }}-runner-${{ github.sha }}
         restore-keys: |
-          ubuntu-latest-runner-
+          ${{ runner.os }}-runner-
     - run: |
         docker cp ${{ job.services.squid.id }}:/var/log/squid/access.log access.log
         cat access.log
@@ -48,7 +48,7 @@ jobs:
       id: cache
       with:
         path: test-cache
-        key: ubuntu-latest-runner-${{ github.sha }}
+        key: ${{ runner.os }}-runner-${{ github.sha }}
 
     - name: Fail if cache not found
       if: steps.cache.outputs.cache-hit != 'true'
