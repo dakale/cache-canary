@@ -1,0 +1,60 @@
+name: runner-cache
+
+on: push
+
+jobs:
+  upload:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: runner-cache upload (${{ matrix.os }})
+    services:
+      squid:
+        image: dakale/squid
+        ports: ['3128:3128']
+        options: '--health-cmd "sleep 5"'
+    env:
+      http_proxy: http://localhost:3128
+      https_proxy: http://localhost:3128
+    steps:
+    - name: Create file to cache
+      run: |
+        mkdir test-cache
+        echo "foo" > test-cache/test.txt
+    - uses: actions/cache@v1
+      with:
+        path: test-cache
+        key: ${{ runner.os }}-runner-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-runner-
+  restore:
+    needs: upload
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: runner-cache restore (${{ matrix.os }})
+    services:
+      squid:
+        image: dakale/squid
+        ports: ['3128:3128']
+        options: '--health-cmd "sleep 5"'
+    env:
+      http_proxy: http://localhost:3128
+      https_proxy: http://localhost:3128
+    steps:
+    - uses: actions/cache@v1
+      id: cache
+      with:
+        path: test-cache
+        key: ${{ runner.os }}-runner-${{ github.sha }}
+
+    - name: Fail if cache not found
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        echo "Cache not found, upload failed"
+        exit 1
+    - name: Check cache contents
+      shell: bash
+      run: if [ $(cat test-cache/test.txt) == "foo" ]; then echo "Cache contents verified."; exit 0; else echo "Cache invalid"; exit 1; fi
