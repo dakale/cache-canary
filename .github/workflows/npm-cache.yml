@@ -15,10 +15,10 @@ jobs:
         ports: ['3129:3129']
         options: '--health-cmd "sleep 5"'
     env:
-      http_proxy_old: localhost:3128
-      https_proxy_old: localhost:3128
-      http_proxy: http://github:actions@localhost:3129
-      https_proxy: http://github:actions@localhost:3129
+      http_proxy: http://localhost:3128
+      https_proxy: http://localhost:3128
+      http_proxy_old: http://github:actions@localhost:3129
+      https_proxy_old: http://github:actions@localhost:3129
     strategy:
       matrix:
         os: [ubuntu-latest]
