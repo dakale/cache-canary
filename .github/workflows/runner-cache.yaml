@@ -18,6 +18,9 @@ jobs:
       http_proxy: http://localhost:3128
       https_proxy: http://localhost:3128
     steps:
+    - name: Block connections via hosts
+      run: |
+        echo "127.0.0.0 github.com api.github.com artifactcache.actions.githubusercontent.com" >> /etc/hosts
     - name: Create file to cache
       run: |
         mkdir test-cache
